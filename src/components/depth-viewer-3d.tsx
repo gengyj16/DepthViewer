@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -191,7 +192,7 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
   }, [colorImageFile, depthMapFile]);
 
   return (
-    <div className="relative w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px] rounded-lg overflow-hidden border bg-card shadow-sm">
+    <div className="relative w-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px] rounded-lg overflow-hidden border bg-card shadow-sm aspect-video">
       {isLoading && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 z-10">
           <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />

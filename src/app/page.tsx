@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -36,14 +37,14 @@ export default function HomePage() {
         <div className="md:col-span-1">
           <ImageUploader onImagesReady={handleImagesReady} />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 flex items-center justify-center">
           {areImagesReady && colorImageFile && depthMapFile ? (
             <DepthViewer3D
               colorImageFile={colorImageFile}
               depthMapFile={depthMapFile}
             />
           ) : (
-            <Card className="w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px] flex items-center justify-center border-dashed">
+            <Card className="w-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px] flex items-center justify-center border-dashed">
               <CardContent className="text-center">
                 <div className="mx-auto h-24 w-24 mb-4" data-ai-hint="3d cube perspective">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="hsl(var(--muted-foreground))" className="w-full h-full opacity-50">
