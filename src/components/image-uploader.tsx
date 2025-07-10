@@ -132,7 +132,7 @@ export function ImageUploader({ onImagesReady, onReset }: ImageUploaderProps) {
       <Label htmlFor="color-image-upload" className="text-sm font-medium">Color Image</Label>
       {colorImagePreview && colorImageFile ? (
         <div className="relative group w-full h-48 rounded-md overflow-hidden border border-muted">
-          <Image src={colorImagePreview} alt="Color Image preview" layout="fill" objectFit="contain" data-ai-hint="texture pattern" />
+          <Image src={colorImagePreview} alt="Color Image preview" fill className="object-contain" data-ai-hint="texture pattern" />
         </div>
       ) : (
         <div className="flex items-center justify-center w-full">
@@ -159,7 +159,7 @@ export function ImageUploader({ onImagesReady, onReset }: ImageUploaderProps) {
        <Label htmlFor="depth-map-upload" className="text-sm font-medium">Depth Map (Grayscale)</Label>
       {depthMapPreview && depthMapFile ? (
         <div className="relative group w-full h-48 rounded-md overflow-hidden border border-muted">
-          <Image src={depthMapPreview} alt="Depth map preview" layout="fill" objectFit="contain" data-ai-hint="abstract monochrome" />
+          <Image src={depthMapPreview} alt="Depth map preview" fill className="object-contain" data-ai-hint="abstract monochrome" />
            {!generateMode && <Button
             variant="ghost"
             size="icon"
