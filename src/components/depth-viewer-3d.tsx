@@ -21,11 +21,12 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!colorImageFile || !depthMapFile || !mountRef.current) {
+    const mountPoint = mountRef.current;
+    if (!colorImageFile || !depthMapFile || !mountPoint) {
       // Clear canvas if files are removed
-      if (mountRef.current) {
-        while (mountRef.current.firstChild) {
-          mountRef.current.removeChild(mountRef.current.firstChild);
+      if (mountPoint) {
+        while (mountPoint.firstChild) {
+          mountPoint.removeChild(mountPoint.firstChild);
         }
       }
       setIsLoading(false);
@@ -33,16 +34,21 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
       return;
     }
 
+    // Explicitly clear the container before adding a new canvas
+    while (mountPoint.firstChild) {
+      mountPoint.removeChild(mountPoint.firstChild);
+    }
+
     setIsLoading(true);
     setError(null);
     let animationFrameId: number;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, mountRef.current.clientWidth / mountRef.current.clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, mountPoint.clientWidth / mountPoint.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+    renderer.setSize(mountPoint.clientWidth, mountPoint.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    mountRef.current.appendChild(renderer.domElement);
+    mountPoint.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = false; // Usually, only rotation is desired for this effect
@@ -161,10 +167,10 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
     animate();
 
     const handleResize = () => {
-      if (mountRef.current) {
-        camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
+      if (mountPoint) {
+        camera.aspect = mountPoint.clientWidth / mountPoint.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+        renderer.setSize(mountPoint.clientWidth, mountPoint.clientHeight);
       }
     };
     window.addEventListener('resize', handleResize);
@@ -189,9 +195,9 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
         scene.background.dispose();
       }
       // Clean up the DOM element
-      if (mountRef.current) {
-        while (mountRef.current.firstChild) {
-          mountRef.current.removeChild(mountRef.current.firstChild);
+      if (mountPoint) {
+        while (mountPoint.firstChild) {
+          mountPoint.removeChild(mountPoint.firstChild);
         }
       }
     };
