@@ -12,8 +12,8 @@ interface DepthViewer3DProps {
 }
 
 const MAX_VIEW_ANGLE = 0.4; // Radians, limits up/down and left/right rotation
-const DISPLACEMENT_SCALE = 150; // Adjust for more or less depth effect
-const PLANE_SEGMENTS = 200; // More segments = smoother depth, but more performance cost
+const DISPLACEMENT_SCALE = 200; // Adjust for more or less depth effect
+const PLANE_SEGMENTS = 300; // More segments = smoother depth, but more performance cost
 
 export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
