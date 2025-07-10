@@ -90,18 +90,24 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
           depthImage.onerror = reject;
         });
 
+        const colorImageWidth = colorTexture.image.width;
+        const colorImageHeight = colorTexture.image.height;
+
         const depthCanvas = document.createElement('canvas');
-        depthCanvas.width = depthImage.width;
-        depthCanvas.height = depthImage.height;
+        depthCanvas.width = colorImageWidth;
+        depthCanvas.height = colorImageHeight;
         const depthCtx = depthCanvas.getContext('2d', { willReadFrequently: true });
         if (!depthCtx) throw new Error("Could not get 2D context for depth map");
-        depthCtx.drawImage(depthImage, 0, 0);
-        const depthData = depthCtx.getImageData(0, 0, depthImage.width, depthImage.height);
+        
+        // Stretch depth map to match color image dimensions if they are different
+        depthCtx.drawImage(depthImage, 0, 0, colorImageWidth, colorImageHeight);
+        
+        const depthData = depthCtx.getImageData(0, 0, colorImageWidth, colorImageHeight);
         
         URL.revokeObjectURL(depthImage.src);
 
-        const planeWidth = colorTexture.image.width * 0.5; 
-        const planeHeight = colorTexture.image.height * 0.5;
+        const planeWidth = colorImageWidth * 0.5; 
+        const planeHeight = colorImageHeight * 0.5;
         const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight, PLANE_SEGMENTS, PLANE_SEGMENTS);
         const positions = geometry.attributes.position;
 
@@ -109,11 +115,11 @@ export function DepthViewer3D({ colorImageFile, depthMapFile }: DepthViewer3DPro
           const u = (positions.getX(i) / planeWidth + 0.5);
           const v = 1 - (positions.getY(i) / planeHeight + 0.5); // THREE.js UVs are bottom-left, images top-left
 
-          const x = Math.floor(u * depthImage.width);
-          const y = Math.floor(v * depthImage.height);
+          const x = Math.floor(u * colorImageWidth);
+          const y = Math.floor(v * colorImageHeight);
           
-          if (x >= 0 && x < depthImage.width && y >= 0 && y < depthImage.height) {
-            const pixelIndex = (y * depthImage.width + x) * 4;
+          if (x >= 0 && x < colorImageWidth && y >= 0 && y < colorImageHeight) {
+            const pixelIndex = (y * colorImageWidth + x) * 4;
             const grayscaleValue = depthData.data[pixelIndex] / 255.0; // Assuming R channel for grayscale
             const displacement = (grayscaleValue - 0.5) * DISPLACEMENT_SCALE;
             positions.setZ(i, displacement);
