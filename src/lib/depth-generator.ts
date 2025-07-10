@@ -5,7 +5,7 @@
 // Ensure onnxruntime-web is loaded via a <script> tag before this is called.
 declare const ort: any;
 
-const MODEL_INPUT_SIZE = 1036;
+const MODEL_INPUT_SIZE = 518;
 const MODEL_URL = "https://cdn.glitch.me/0f5359e2-6022-421b-88f7-13e276d0fb33/depthanythingv2-vits-dynamic-quant.onnx";
 
 let session: any = null;
