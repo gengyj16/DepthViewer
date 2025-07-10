@@ -67,7 +67,7 @@ function postprocess(output: any): ImageData {
     const { data: pixelData } = imageData;
 
     for (let i = 0; i < outputData.length; i++) {
-        const normalized = 255 * (1 - ((outputData[i] - min) / range));
+        const normalized = 255 * ((outputData[i] - min) / range);
         const j = i * 4;
         pixelData[j] = normalized;     // R
         pixelData[j + 1] = normalized; // G
